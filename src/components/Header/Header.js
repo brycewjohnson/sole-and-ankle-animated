@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components/macro';
+import styled, {css} from 'styled-components/macro';
 
 import { QUERIES, WEIGHTS } from '../../constants';
 import Logo from '../Logo';
@@ -118,11 +118,45 @@ const NavLink = styled.a`
   font-size: 1.125rem;
   text-transform: uppercase;
   text-decoration: none;
-  color: var(--color-gray-900);
-  font-weight: ${WEIGHTS.medium};
+  color: transparent;
+  font-weight: ${WEIGHTS.bold};
+  overflow: hidden;
+  position: relative;
 
-  &:first-of-type {
+  &:hover::before, &:hover::after {
+    transform: translateY(-100%);
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition: transform 200ms;
+    }
+  }
+
+  &:hover::after {
+    transform: translateY(0%);
+  }
+
+  &:first-of-type::before, &:first-of-type::after {
     color: var(--color-secondary);
+  }
+
+  &::before, &::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: var(--color-gray-900);
+    content: ${props => `'${props.children}'`};
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition: transform 500ms;
+      will-change: transform;
+    }
+  }
+
+  &::before {
+    font-weight: ${WEIGHTS.medium};
+  }
+  &::after {
+    transform: translateY(100%);
   }
 `;
 
